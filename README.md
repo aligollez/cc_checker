@@ -9,15 +9,14 @@ Toolkit Not Completed Yet .. the under construction
 - run it with python 3
 - It will ask for the name of the cc list. For example, "list.txt" should be in the directory where you run the program.
 - When bershka pays, there are 2 separate payment pages as visa or mastercard, you can choose manually for now, I will fix it as soon as possible
+- ---UPDATE --29.09.2021
+ In bershka, there is an update to the command line selection for visa and master on different pages in the payment screen.
+IMPORTANT :26. line cc.txt is defined as your list
+IMPORTANTOn line 52, the chromedriver path is defined, correct it yourself. Those who use linux can edit and use the same way.
 
 ## Important
 ## Change the link of the product purchased on line 37
-##  You will need to change the code on line 86 :
 
-- "/html/body/div[20]/div[1]/div[2]/div/checkout-payment/div/div/payment-methods/div/div/payment-method[2]/div/span[1]"  <==master
-- "/html/body/div[20]/div[1]/div[2]/div/checkout-payment/div/div/payment-methods/div/div/payment-method[1]/div/span[1]"  <==visa
-
- 
 
 ## Installation
 
