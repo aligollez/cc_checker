@@ -53,7 +53,7 @@ options.add_argument('--disable-gpu')
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--no-sandbox')
 #options.add_argument('--headless')
-options.add_argument("headless")
+#options.add_argument("headless")
 driver = webdriver.Chrome(executable_path=r'/home/kali/Masaüstü/Register User/chromedriver', options=options)
 driver.set_window_size(360,640)
 
