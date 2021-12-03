@@ -1,8 +1,8 @@
+import chromedriver_autoinstaller
 from http import client
 from typing import Text
 from selenium import webdriver
 from colorama import Fore, Back, Style, init
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support import select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -22,7 +22,7 @@ import string
 from time import sleep
 
 def funct():
-    CCList = open(r'/home/kali/Masaüstü/Register User/cc.txt', "r", encoding="utf8").read().splitlines()
+    CCList = open('cc.txt', "r+", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -37,27 +37,44 @@ letters = ["a", "b","c", "d","e", "f","g", "h","i", "j","k", "l","m", "n",
 def random_char(char_num):
        return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
 
+options = webdriver.ChromeOptions()
+
+options.add_experimental_option("useAutomationExtension", False)  # Adding Argument to Not Use Automation Extension
+options.add_experimental_option("excludeSwitches", ["enable-automation"])  # Excluding enable-automation Switch
+options.add_argument("disable-popup-blocking")
+options.add_argument("disable-notifications")
+options.add_argument("disable-gpu")
+chromedriver_autoinstaller.install()
+driver = webdriver.Chrome(options=options)
+driver.set_window_size(800, 600)
 user_agent =" Mozilla/5.1 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1"
-profile = webdriver.FirefoxProfile() 
-profile.set_preference("general.useragent.override", user_agent)
-options = webdriver.FirefoxOptions()
-options.headless = False
-driver = webdriver.Firefox(profile, options=options)
 wait = WebDriverWait(driver, 26, poll_frequency=1)
 print('Starting ..')
 driver.delete_all_cookies()
 buy = ("https://www.bershka.com/tr/aslan-burcu-u%C3%A7lu-kolye-c0p103013723.html?colorId=302")
-wait = WebDriverWait(driver, 25, poll_frequency=1)
 init(autoreset=True)
 while True:
 
         print('Starting ..')
         #Purchased product link here  , change it if the product is out of stock
         driver.get(buy)
-        sleep(2)
-        wait.until(EC.presence_of_element_located((By.ID, 'onetrust-close-btn-container'))).click()
-        wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, '.button-text'))).click()
+        sleep(4)
+        try: driver.find_element(By.XPATH, "//button[@id=\'onetrust-accept-btn-handler\']").click()
+        except:
+            print('cookie button click')
+            pass
+        try:  driver.find_element(By.XPATH, "//button[@id=\'onetrust-close-btn-containe\']").click() 
+        except:
+            print('cookie button click')
+            pass
+        
+      
+        # tikla = wait.until(EC.presence_of_element_located((By.ID, 'onetrust-close-btn-container')))
+ 
+ 
+ 
+
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.button-text'))).click()
         sleep(2)
         driver.get("https://www.bershka.com/tr/checkout.html")
         sleep(2)
