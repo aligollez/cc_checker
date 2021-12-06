@@ -164,9 +164,9 @@ while True:
             if 'Siparişiniz için çok teşekkür ederiz' in driver.page_source:
                 print(Fore.GREEN +"LİVE KART NO"," :", cc,"|",mm,"|",yy,"|",cvv,)
                 #print(cikti.text)
-                open('live.txt','a+').write(str(cc)+'|'+mm+'|'+yy+'|'+cvv+'\n'))
+            
             elif 'Sipariş tamamlanamadı. İşlem reddedildi. Girdiğiniz bilgileri kontrol edin veya farklı bir ödeme yöntemi deneyin.' in driver.page_source: 
-                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,
+                print(Fore.RED +"DEC KART"," :", cc,"|",mm,"|",yy,"|",cvv,)
                 
 
             elif 'Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.' in driver.page_source: 
