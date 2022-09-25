@@ -46,12 +46,12 @@ options.add_argument("disable-notifications")
 options.add_argument("disable-gpu")
 chromedriver_autoinstaller.install()
 driver = webdriver.Chrome(options=options)
-driver.set_window_size(800, 600)
+driver.set_window_size(414, 896)
 user_agent =" Mozilla/5.1 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1"
 wait = WebDriverWait(driver, 26, poll_frequency=1)
 print('Starting ..')
 driver.delete_all_cookies()
-buy = ("https://www.bershka.com/tr/aslan-burcu-u%C3%A7lu-kolye-c0p103013723.html?colorId=302")
+buy = ("https://www.bershka.com/tr/10%27lu-renkli-sa%C3%A7-tokas%C4%B1-paketi-c0p115347804.html?colorId=607")
 init(autoreset=True)
 while True:
 
@@ -59,11 +59,11 @@ while True:
         #Purchased product link here  , change it if the product is out of stock
         driver.get(buy)
         sleep(4)
-        try: driver.find_element(By.XPATH, "//button[@id=\'onetrust-accept-btn-handler\']").click()
+        try: driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/button").click()
         except:
             print('cookie button click')
             pass
-        try:  driver.find_element(By.XPATH, "//button[@id=\'onetrust-close-btn-containe\']").click() 
+        try:  driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']").click() 
         except:
             print('cookie button click')
             pass
@@ -81,41 +81,46 @@ while True:
         wait.until(
              EC.presence_of_element_located((By.XPATH, '//*[@id="shipping-wrapper"]/div[1]/shipping-methods/shipping-method[1]/div/span'))
         ).click()
-        driver.find_element_by_css_selector('.ellipsis').click()
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#store-search'))).send_keys('a')
+        wait.until(
+             EC.presence_of_element_located((By.XPATH,'//*[@id="summary-wrapper"]/div/div[2]/div/cta-checkout/div/div/div[2]/div/button'))).click()
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#store-search'))).send_keys('adana')
         sleep(1)
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.inverse:nth-child(2)'))).click()
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'bsk-store-address.stores-address-container:nth-child(1) > div:nth-child(1)'))).click()
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div"))).click()
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div/input"))).send_keys(random_char(5))
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").click()
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input").send_keys(random_char(5))
-        driver.find_element_by_name("email").click()
-        driver.find_element_by_name("email").send_keys(random_char(5)+"@mail.com")
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").click()
-        driver.find_element_by_xpath("/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input").send_keys("5344443565")
-        driver.find_element_by_xpath("//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div").click()
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[2]/div/input"))).click()
+        wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input"))).send_keys(random_char(5))
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[3]/email-field/ng-form/ul/li/div/div/input"))).click()
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[3]/email-field/ng-form/ul/li/div/div/input"))).send_keys(random_char(5)+"@mail.com")
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input"))).click()
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input"))).send_keys("5344443565")
+        wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div/button/span[2]"))).click()
+        try:  wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='summary-wrapper']/div/div[2]/div/div/cta-checkout/div/div/div[2]/div/button/span[2]"))).click()   
+        except:
+            print('devam button tiklandi')
+            pass 
         print( Fore.GREEN +"kayıt tamamlandı.")
-        sleep(1)
+        sleep(2)
         #driver.find_element_by_css_selector("#summary-wrapper > div > div.summary-cta > div > div > cta-checkout > div > div > div.cta-checkout-post > div > button").click()
          
         tikli = False
         kartlar = funct()
         for (cc, mm, yy, cvv) in kartlar:
-
+            sleep(0.3)
             if re.findall(r"^4",cc):
-                wait.until(EC.presence_of_element_located(((By.CSS_SELECTOR, '.payment-19-info > span:nth-child(1)')))).click()
+                wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="payment-19"]/div/span[1]'))).click()
                 print(f'Visa Seçildi ..') 
             
             elif re.findall(r"^5",cc):
-                wait.until(EC.presence_of_element_located(((By.CSS_SELECTOR, '.payment-20-info > span:nth-child(1)')))).click()
+                wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="payment-20"]/div/span[1]'))).click()
                 print(f'Mastercard Seçildi ..')
 
             wait.until(
-             EC.presence_of_element_located((By.XPATH, '/html/body/div[20]/div[1]/div[2]/div/checkout-payment/div/div/div[1]/form/div[1]/payment-credit-card/ng-form/ul/li[1]/div/input'))
+             EC.presence_of_element_located((By.XPATH, '//*[@id="payment-wrapper"]/div[1]/form/div[1]/payment-credit-card/ng-form/ul/li[1]/div/input'))
             ).clear()
             wait.until(
-             EC.presence_of_element_located((By.XPATH, '/html/body/div[20]/div[1]/div[2]/div/checkout-payment/div/div/div[1]/form/div[1]/payment-credit-card/ng-form/ul/li[1]/div/input'))
+             EC.presence_of_element_located((By.XPATH, '//*[@id="payment-wrapper"]/div[1]/form/div[1]/payment-credit-card/ng-form/ul/li[1]/div/input'))
             ).send_keys(cc)
             sleep(0.4)
             wait.until(
@@ -187,4 +192,3 @@ while True:
             sleep(2)
             tikli = False
             sleep(1)
-
